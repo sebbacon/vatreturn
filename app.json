@@ -1,0 +1,23 @@
+{
+  "name": "Flask-Dance with HMRC",
+  "description": "Testing Flask-Dance's OAuth integration with HMRC",
+  "keywords": [
+    "oauth"
+  ],
+  "website": "https://github.com/sebbacon/vatreturn",
+  "repository": "https://github.com/sebbacon/vatreturn",
+  "env": {
+    "FLASK_SECRET_KEY": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "HMRC_OAUTH_CLIENT_ID": {
+      "description": "The OAuth client ID for your application, assigned by HMRC",
+      "value": "client-id-goes-here"
+    },
+    "HMRC_OAUTH_CLIENT_SECRET": {
+      "description": "The OAuth client secret for your application, assigned by HMRC",
+      "value": "client-secret-goes-here"
+    }
+  }
+}
