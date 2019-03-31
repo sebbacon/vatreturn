@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
-hmrc_bp = make_hmrc_blueprint(scope='read:vat+write:vat')
+hmrc_bp = make_hmrc_blueprint(scope='read:vat write:vat')
 app.register_blueprint(hmrc_bp, url_prefix="/login")
 
 
@@ -19,9 +20,17 @@ API_HOST = 'https://test-api.service.hmrc.gov.uk'
 def index():
     if not hmrc.authorized:
         return redirect(url_for("hmrc.login"))
-    resp = hmrc.get("/user")
-    assert resp.ok
-    return "You are @{login} on HMRC".format(login=resp.json()["login"])
+    ob = obligations().json()
+    return "You have <pre>{ob}</pre> obligations on HMRC".format(ob=ob)
+
+# VAT endpoints
+# https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/vat-api/1.0
+def obligations():
+    # add 'ACCEPT_HEADER_INVALID'
+    accept = "application/vnd.hmrc.1.0+json"
+    return hmrc.get(
+        "/organisations/vat/393706722/obligations?status=O",
+        headers={'ACCEPT': accept})
 
 
 def create_test_user():

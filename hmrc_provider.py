@@ -70,6 +70,7 @@ def make_hmrc_blueprint(
         session_class=session_class,
         backend=backend,
         storage=storage,
+        token_url_params={'include_client_id': True}
     )
     hmrc_bp.from_config["client_id"] = "HMRC_OAUTH_CLIENT_ID"
     hmrc_bp.from_config["client_secret"] = "HMRC_OAUTH_CLIENT_SECRET"
