@@ -9,7 +9,11 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
-hmrc_bp = make_hmrc_blueprint(scope='read:vat write:vat')
+hmrc_bp = make_hmrc_blueprint(
+    scope='read:vat write:vat hello',
+    client_id=app.config["HMRC_OAUTH_CLIENT_ID"],
+    client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"]
+)
 app.register_blueprint(hmrc_bp, url_prefix="/login")
 
 

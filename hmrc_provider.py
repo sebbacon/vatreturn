@@ -69,6 +69,8 @@ def make_hmrc_blueprint(
         base_url="https://test-api.service.hmrc.gov.uk/",
         authorization_url="https://test-api.service.hmrc.gov.uk/oauth/authorize",
         token_url="https://test-api.service.hmrc.gov.uk/oauth/token",
+        auto_refresh_url="https://test-api.service.hmrc.gov.uk/oauth/token",
+        auto_refresh_kwargs={'client_id': client_id, 'client_secret': client_secret},
         redirect_url=redirect_url,
         redirect_to=redirect_to,
         login_url=login_url,
