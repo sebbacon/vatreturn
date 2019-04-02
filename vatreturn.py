@@ -29,17 +29,16 @@ def hello():
 def index():
     if not hmrc.authorized:
         return redirect(url_for("hmrc.login"))
-    ob = obligations().json()
+    ob = get_obligations().json()
     return "You have <pre>{ob}</pre> obligations on HMRC".format(ob=ob)
 
 # VAT endpoints
 # https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/vat-api/1.0
-def obligations():
-    # add 'ACCEPT_HEADER_INVALID'
-    accept = "application/vnd.hmrc.1.0+json"
-    return hmrc.get(
-        "/organisations/vat/393706722/obligations?status=O",
-        headers={'ACCEPT': accept})
+def get_obligations():
+    url = "/organisations/vat/393706722/obligations"
+    # status O means Open
+    params = {'status': 'O'}  # open
+    return hmrc.get(url, params=params)
 
 
 def create_test_user():
