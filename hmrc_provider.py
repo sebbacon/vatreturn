@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from flask_dance.consumer import OAuth2ConsumerBlueprint
+from flask_dance.consumer.requests import OAuth2Session
 from functools import partial
 from flask.globals import LocalProxy, _lookup_app_object
 
@@ -13,6 +14,12 @@ except ImportError:
 __maintainer__ = "David Baumgold <david@davidbaumgold.com>"
 
 
+class HMRCSession(OAuth2Session):
+    def __init__(self, *args, **kwargs):
+        super(HMRCSession, self).__init__(*args, **kwargs)
+        self.headers["ACCEPT"] = "application/vnd.hmrc.1.0+json"
+
+
 def make_hmrc_blueprint(
     client_id=None,
     client_secret=None,
@@ -22,7 +29,6 @@ def make_hmrc_blueprint(
     login_url=None,
     authorized_url=None,
     session_class=None,
-    backend=None,
     storage=None,
 ):
     """
@@ -67,8 +73,7 @@ def make_hmrc_blueprint(
         redirect_to=redirect_to,
         login_url=login_url,
         authorized_url=authorized_url,
-        session_class=session_class,
-        backend=backend,
+        session_class=session_class or HMRCSession,
         storage=storage,
         token_url_params={'include_client_id': True}
     )
