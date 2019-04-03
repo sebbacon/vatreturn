@@ -1,6 +1,6 @@
 {
-  "name": "Flask-Dance with HMRC",
-  "description": "Testing Flask-Dance's OAuth integration with HMRC",
+  "name": "CSV to HMRC flat rate VAT return",
+  "description": "A simple system for submitting flat rate VAT returns",
   "keywords": [
     "oauth"
   ],
