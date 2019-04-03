@@ -22,7 +22,7 @@
       <td>{{ ob.end }}</td>
       <td>{{ ob.due }}</td>
       <td>{{ ob.status }}</td>
-      <td>{{ ob.periodKey }}</td>
+      <td><a href="{{ url_for('preview_return', period_key=ob.periodKey) }}">{{ ob.periodKey }}</a></td>
     </tr>
     {% endfor %}
   </table>
