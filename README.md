@@ -18,7 +18,7 @@ Set environment variables, then:
 
 # Google Sheets format
 
-At VAT_CSV, place something in this format. The column headers matter (at the moment):
+The CSV you've prepared must match this format. The column headers matter (at the moment):
 
     VAT period   SUM of Fee  SUM of VAT
           17A3        1800        360

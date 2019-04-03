@@ -19,10 +19,6 @@
       "description": "Your VAT number",
       "value": "vat-number-goes-here"
     },
-    "VAT_CSV": {
-      "description": "A URL for your VAT data in CSV vormat",
-      "value": "csv-url-goes-here"
-    },
     "FLASK_SECRET_KEY": {
       "description": "A secret key for verifying the integrity of signed cookies.",
       "generator": "secret"

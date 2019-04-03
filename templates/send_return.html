@@ -5,7 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<pre>{{ g.data }}</pre>
+  <h1>Return submission</h1>
+
+  {% if g.error %}
+  <div class="alert alert-danger">
+    There was a problem. This is the error:
+    <pre>
+      {{ g.error }}
+    </pre>
+  </div>
+  {% else %}
+
+  <p>This is the return you just submitted.</p>
+
   <table class="table striped">
     <tr>
       <th>Period key</th>
@@ -56,4 +68,5 @@
   <form action="{{ url_for('send_return', period_key=g.data.periodKey) }}" method="post">
     <input type="submit" name="submit" class="btn btn-warning">
   </form>
+  {% endif %}
 {% endblock %}
