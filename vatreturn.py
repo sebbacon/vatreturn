@@ -44,10 +44,7 @@ def hello():
 
 @app.route("/")
 def index():
-    if not hmrc.authorized:
-        return redirect(url_for("hmrc.login"))
-    else:
-        return redirect(url_for("obligations"))
+    return render_template('index.html')
 
 
 def get_endpoint(endpoint, params={}):
@@ -66,6 +63,8 @@ def get_endpoint(endpoint, params={}):
 
 @app.route("/obligations")
 def obligations(show_all=False):
+    if not hmrc.authorized:
+        return redirect(url_for("hmrc.login"))
     if show_all:
         today = datetime.date.today()
         from_date = today - datetime.timedelta(days=365*2)

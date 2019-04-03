@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool: privacy policy{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<h1>Welcome to the free flat-rate VAT submittor</h1>
+
+<p>This software was created by <a href="mailto:seb.bacon@gmail.com">Seb Bacon</a> for his own use.  It is free to use and made available under <a href="https://github.com/sebbacon/vatreturn/blob/master/LICENSE">this License</a>. Using this website indicates your agreement with that licence, specifically that it is provided without warranty of any kind.</p>
+
+<p>I made this because from April 2019, anyone who submits a VAT return <strong>has to pay money to do so</strong>. This is because the HMRC have stopped providing an online form (which consisted of 9 simple boxes on one page) and now insist you use software to submit your return. They don't provide any such software themselves, nor do they recommend any such software. They just give you a really long list of third party suppliers.</p>
+
+<p>I don't want to evaluate a huge list of suppliers. Some of them might be dodgy or have poor security practices.  Some of them might lock me into their lousy software. I have a really simple spreadsheet for my very simple accounts. <strong>More importantly, on principle, I don't think citizens should have to pay money in order to pay taxes!</strong></p>
+
+<p>This software doesn't record ANY personal info (<a href="/privacy">more here</a>).  You just have to make a spreadsheet in a particular format, and make it available as a CSV online. I did it with a pivot table in Google Sheets. If you can't work it out, <a href="mailto:seb.bacon@gmail.com">drop me a line</a> and I'll write up better instructions.</p>
+
+<p>It then takes the spreadsheet and submits it to HMRC for you.</p>
+
+<p><strong>It currently only works for people on the flat-rate scheme</strong></p>
+
+<p>Click the button to continue!</p>
+
+<a class="btn btn-info" href="/obligations">I understand I'm using this at my own risk, and I don't want to pay money for unknown software to submit my very simple tax return</a>
+
+{% endblock %}
