@@ -2,7 +2,8 @@
 
 Nothing is stored in the app - the data is fetched from a CSV at a URL you define (e.g. from a Google Sheet) and then sent to HMRC. Therefore, you can take advantage of Heroku's free deploy tier to do this instantly.  You'll need to register an application with HMRC (see below) and fill out the `client_id`, `client_secret`, and a URL to the CSV:
 
-|heroku-deploy|
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 
 # Develop
 
