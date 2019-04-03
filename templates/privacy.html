@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool: privacy policy{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<h2>Privacy policy</h2>
+
+<p>This software was created by <a href="mailto:seb.bacon@gmail.com">Seb Bacon</a> for his own use. No personal data is stored in the system at any time. It takes data you publish yourself on the web (e.g. via Google Sheets) and submits it to the HMRC as a VAT return. You are identified using the HRMC authentication system, and none of your details are stored on the server.</p>
+
+<p>No user tracking or analytics takes place, and no user-related information is ever logged or otherwise stored.</p>
+
+<p>To verify this, you can check the source code of the software <a href="https://github.com/sebbacon/vatreturn">on Github</a>, where you will also find instructions on how to deploy your own copy.</p>
+
+<p>The privacy of the data you publish as a CSV is <strong>your responsibility</strong>. The software currently requires the summary data (total sales and total VAT) to be available online in a CSV format. If you are uncomfortable with this, you should not use it.</p>
+
+<p>However, note that:
+  <ul>
+    <li>it's effectively impossible for third parties to guess a Google Sheets link</li>
+    <li>you can unpublish the sheet as soon as your return has been made</li>
+    <li>the CSV only needs to include your net sales income and VAT payable, which you may or may not consider to be sensitive information</li>
+  </ul>
+</p>
+
+{% endblock %}

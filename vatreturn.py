@@ -27,6 +27,11 @@ app.register_blueprint(hmrc_bp, url_prefix="/login")
 API_HOST = 'https://test-api.service.hmrc.gov.uk'
 
 
+@app.route("/privacy")
+def hello():
+    return render_template('privacy.html')
+
+
 @app.route("/hello")
 def hello():
     url = 'https://test-api.service.hmrc.gov.uk/hello/user'
