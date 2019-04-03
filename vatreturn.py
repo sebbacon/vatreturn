@@ -32,6 +32,11 @@ def privacy():
     return render_template('privacy.html')
 
 
+@app.route("/tandc")
+def tandc():
+    return render_template('tandc.html')
+
+
 @app.route("/hello")
 def hello():
     url = 'https://test-api.service.hmrc.gov.uk/hello/user'
