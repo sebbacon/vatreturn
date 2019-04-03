@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% if g.ok %}
+    Successfully contacted the HMRC API at /hello/user
+  {% else %}
+    Problem contacting the HMRC API at /hello/user
+  {% endif %}
+{% endblock %}

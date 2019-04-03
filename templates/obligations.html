@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% if g.error %}
+  <div class="error">{{ g.error }}</div>
+  {% else %}
+  <table class="table striped">
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th>Due</th>
+      <th>Status</th>
+      <th>Period Key</th>
+    </tr>
+    {% for ob in g.obligations %}
+    <tr>
+      <td>{{ ob.start }}</td>
+      <td>{{ ob.end }}</td>
+      <td>{{ ob.due }}</td>
+      <td>{{ ob.status }}</td>
+      <td>{{ ob.periodKey }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+{% endblock %}
