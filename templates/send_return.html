@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<pre>{{ g.data }}</pre>
+  <table class="table striped">
+    <tr>
+      <th>Period key</th>
+      <td>{{ g.data.periodKey }}</td>
+    </tr>
+    <tr>
+      <th>VAT due on sales (box 1)</th>
+      <td>{{ g.data.vatDueSales }}</td>
+    </tr>
+    <tr>
+      <th>VAT due on acquisitions (box 2)</th>
+      <td>{{ g.data.vatDueAcquisitions }}</td>
+    </tr>
+    <tr>
+      <th>Total VAT due (box 3)</th>
+      <td>{{ g.data.totalVatDue }}</td>
+    </tr>
+    <tr>
+      <th>VAT reclaimed current period (box 4)</th>
+      <td>{{ g.data.vatReclaimedCurrPeriod }}</td>
+    </tr>
+    <tr>
+      <th>Net VAT due (box 5)</th>
+      <td>{{ g.data.netVatDue }}</td>
+    </tr>
+    <tr>
+      <th>Total value of sales ex VAT (box 6)</th>
+      <td>{{ g.data.totalValueSalesExVAT }}</td>
+    </tr>
+    <tr>
+      <th>Total value of purchases ex VAT (box 7)</th>
+      <td>{{ g.data.totalValuePurchasesExVAT }}</td>
+    </tr>
+    <tr>
+      <th>Total value of goods supplied ex VAT (box 8)</th>
+      <td>{{ g.data.totalValueGoodsSuppliedExVAT }}</td>
+    </tr>
+    <tr>
+      <th>Total acquisitions ex VAT (box 9)</th>
+      <td>{{ g.data.totalAcquisitionsExVAT }}</td>
+    </tr>
+    <tr>
+      <th>Finalised?</th>
+      <td>{{ g.data.finalised }}</td>
+    </tr>
+  </table>
+
+  <form action="{{ url_for('send_return', period_key=g.data.periodKey) }}" method="post">
+    <input type="submit" name="submit" class="btn btn-warning">
+  </form>
+{% endblock %}

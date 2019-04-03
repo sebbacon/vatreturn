@@ -1,3 +1,4 @@
 flask-dance
 gunicorn
 requests
+pandas
