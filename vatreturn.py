@@ -20,12 +20,12 @@ app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRE
 hmrc_bp = make_hmrc_blueprint(
     scope='read:vat write:vat hello',
     client_id=app.config["HMRC_OAUTH_CLIENT_ID"],
-    client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"]
+    client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"],
+    redirect_to="obligations"
 )
 app.register_blueprint(
     hmrc_bp,
-    url_prefix="/login",
-    redirect_to="obligations")
+    url_prefix="/login",)
 
 
 API_HOST = 'https://test-api.service.hmrc.gov.uk'
