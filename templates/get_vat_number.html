@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Now enter your VAT number</h1>
+<p>To view your outstanding returns, you need to enter your VAT number</p>
+
+<form method="post">
+  <div class="form-group">
+    <label for="hmrc_vat_number">VAT Registration Number:</label>
+    <input name="hmrc_vat_number" type="number" class="form-control" id="hmrc_vat_number">
+    <small id="numberHelp" class="form-text text-muted">This is never stored anywhere on our system</small>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

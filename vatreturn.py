@@ -1,3 +1,4 @@
+from functools import wraps
 import json
 import os
 import requests
@@ -6,6 +7,7 @@ import datetime
 from flask import Flask, redirect, url_for
 from flask import render_template, g
 from flask import request
+from flask import session
 from hmrc_provider import make_hmrc_blueprint, hmrc
 
 import pandas as pd
@@ -15,16 +17,30 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
-app.config["VAT_NUMBER"] = os.environ.get("VAT_NUMBER")
 hmrc_bp = make_hmrc_blueprint(
     scope='read:vat write:vat hello',
     client_id=app.config["HMRC_OAUTH_CLIENT_ID"],
     client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"]
 )
-app.register_blueprint(hmrc_bp, url_prefix="/login")
+app.register_blueprint(
+    hmrc_bp,
+    url_prefix="/login",
+    redirect_to="/obligations")
 
 
 API_HOST = 'https://test-api.service.hmrc.gov.uk'
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not hmrc.authorized:
+            return redirect(url_for("hmrc.login"))
+        else:
+            if 'hmrc_vat_number' not in session:
+                return redirect(url_for('get_vat_number', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @app.route("/privacy")
@@ -37,7 +53,17 @@ def tandc():
     return render_template('tandc.html')
 
 
+@app.route("/get_vat_number", methods=('GET', 'POST',))
+def get_vat_number():
+    if request.method == 'GET':
+        return render_template('get_vat_number.html')
+    elif request.method == 'POST':
+        session['hmrc_vat_number'] = request.form['hmrc_vat_number']
+        return redirect(request.args.get('next'))
+
+
 @app.route("/hello")
+@login_required
 def hello():
     url = 'https://test-api.service.hmrc.gov.uk/hello/user'
     if hmrc.get(url).json()['message'] == 'Hello User':
@@ -52,9 +78,14 @@ def index():
     return render_template('index.html')
 
 
-def get_endpoint(endpoint, params={}):
-    url = "/organisations/vat/{}/{}".format(app.config["VAT_NUMBER"], endpoint)
-    response = hmrc.get(url, params=params)
+def do_action(action, endpoint, params={}, data={}):
+    url = "/organisations/vat/{}/{}".format(
+        session['hmrc_vat_number'], endpoint)
+    if action == 'get':
+        response = hmrc.get(url, params=params)
+    elif action == 'post':
+        response = hmrc.post(url, json=data)
+        import pdb; pdb.set_trace()
 
     if not response.ok:
         try:
@@ -67,9 +98,8 @@ def get_endpoint(endpoint, params={}):
 
 
 @app.route("/obligations")
+@login_required
 def obligations(show_all=False):
-    if not hmrc.authorized:
-        return redirect(url_for("hmrc.login"))
     if show_all:
         today = datetime.date.today()
         from_date = today - datetime.timedelta(days=365*2)
@@ -80,7 +110,7 @@ def obligations(show_all=False):
         }
     else:
         params = {'status': 'O'}
-    obligations = get_endpoint('obligations', params)
+    obligations = do_action('get', 'obligations', params)
     if 'error' in obligations:
         g.error = obligations['error']
     else:
@@ -100,7 +130,7 @@ def return_data(period_key, vat_csv):
     box_2 = 0  # vat due on acquisitions
     box_3 = box_1 + box_2  # total vat due - calculated: Box1 + Box2
     box_4 = 0  # vat reclaimed for current period
-    box_5 = abs(box_3 - box_4)  # net vat due - calculate - amount to be paid. Take the figures from Box 3 and Box 4. Deduct the smaller figure from the larger one and put the difference
+    box_5 = abs(box_3 - box_4)  # net vat due (amount to be paid). Calculated: take the figures from Box 3 and Box 4. Deduct the smaller figure from the larger one and use the difference
     box_6 = gross_receipts  # total value sales ex vat
     box_7 = 0  # total value purchases ex vat
     box_8 = 0  # total value goods supplied ex vat
@@ -122,6 +152,7 @@ def return_data(period_key, vat_csv):
 
 
 @app.route("/<string:period_key>/preview")
+@login_required
 def preview_return(period_key):
     g.period_key = period_key
     g.vat_csv = request.args.get('vat_csv', '')
@@ -131,27 +162,19 @@ def preview_return(period_key):
 
 
 @app.route("/<string:period_key>/send", methods=('POST',))
+@login_required
 def send_return(period_key):
     vat_csv = request.form.get('vat_csv')
-    data = return_data(period_key, vat_csv)
-    url = "/organisations/vat/{}/returns".format(app.config["VAT_NUMBER"])
-    response = hmrc.post(
-        url,
-        data=data)
-    if not response.ok:
-        try:
-            error = response.json()
-        except json.decoder.JSONDecodeError:
-            error = response.text
-        g.error = error
-    g.data = response.json()
+    g.data = return_data(period_key, vat_csv)
+    g.response = do_action('post', 'returns', data=g.data)
     return render_template('send_return.html')
 
 
 @app.route("/logout")
 def logout():
-    #logout_user()
-    return redirect('/')
+    del(session['hmrc_oauth_token'])
+    del(session['hmrc_vat_number'])
+    return redirect(url_for("index"))
 
 
 def create_test_user():

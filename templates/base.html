@@ -40,12 +40,17 @@
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{{ url_for('privacy') }}">Privacy</a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/tandc">T & Cs</a>
       </li>
+      {% if 'hmrc_oauth_token' in session %}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 </nav>

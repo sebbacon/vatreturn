@@ -7,16 +7,20 @@
 {% block content %}
   <h1>Return submission</h1>
 
-  {% if g.error %}
+  {% if g.response.error %}
   <div class="alert alert-danger">
     There was a problem. This is the error:
     <pre>
-      {{ g.error }}
+      {{ g.response.error }}
     </pre>
   </div>
   {% else %}
 
-  <p>This is the return you just submitted.</p>
+<p>The return you just submitted is below.</p>
+<p>Tour "form bundle number" is <code>{{ g.response.formBundleNumber }}</code>.  This is a kind of reference number, so you should make a note of it.</p>
+{% if g.response.paymentIndicator == 'DD' %}
+<p>You have opted to pay by direct debit.  The reference number for this is {{ g.response.chargeRefNumber }}.</p>
+{% endif %}
 
   <table class="table striped">
     <tr>
@@ -65,8 +69,5 @@
     </tr>
   </table>
 
-  <form action="{{ url_for('send_return', period_key=g.data.periodKey) }}" method="post">
-    <input type="submit" name="submit" class="btn btn-warning">
-  </form>
   {% endif %}
 {% endblock %}

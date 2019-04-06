@@ -18,6 +18,7 @@ class HMRCSession(OAuth2Session):
     def __init__(self, *args, **kwargs):
         super(HMRCSession, self).__init__(*args, **kwargs)
         self.headers["ACCEPT"] = "application/vnd.hmrc.1.0+json"
+        self.headers["Content-Type"] = "application/json"
 
 
 def make_hmrc_blueprint(
