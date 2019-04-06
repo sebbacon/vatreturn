@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}VAT Return tool: privacy policy{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<h1>Can this software be used under the Making Tax Digital regime?</h1>
+
+<p>I believe this software exactly fits the description of "Example 3 - Using a spreadsheet and bridging software" in <a href="https://www.gov.uk/government/publications/vat-notice-70022-making-tax-digital-for-vat/vat-notice-70022-making-tax-digital-for-vat">the HMRC guidance</a>.</p>
+<p>According to this guidance, VAT notice 700/21 makes it clear that all VAT-related data must be kept in a digital form, and all transfers of data must stay digital via "digital links".</p>
+
+<p>For someone on the flat rate scheme, "VAT-related data" means sales invoices, plus your business name; the address of your principal place of business; your VAT registration number; and any VAT accounting schemes that you use.</p>
+
+<p>"Functional compatible software" is a software program, or set of software programs, products or applications, that must be able to:
+</p>
+<ol>
+  <li>record and preserve digital records</li>
+  <li>provide to HMRC information and returns from data held in those digital records by using the API platform
+  <li>receive information from HMRC via the API platform</li>
+</ol>
+<p>HMRC expects that "there will be software products available that will perform all of the functions listed above. Some software programs will not be able to perform all of these functions by themselves," and states that they will accept CSV import and export as a "digital link"</p>
+
+
+
+{% endblock %}

@@ -48,6 +48,11 @@ def privacy():
     return render_template('privacy.html')
 
 
+@app.route("/making_tax_digital")
+def making_tax_digital():
+    return render_template('making_tax_digital.html')
+
+
 @app.route("/tandc")
 def tandc():
     return render_template('tandc.html')
