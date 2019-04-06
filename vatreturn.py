@@ -25,7 +25,7 @@ hmrc_bp = make_hmrc_blueprint(
 app.register_blueprint(
     hmrc_bp,
     url_prefix="/login",
-    redirect_to="/obligations")
+    redirect_to="obligations")
 
 
 API_HOST = 'https://test-api.service.hmrc.gov.uk'
@@ -85,8 +85,6 @@ def do_action(action, endpoint, params={}, data={}):
         response = hmrc.get(url, params=params)
     elif action == 'post':
         response = hmrc.post(url, json=data)
-        import pdb; pdb.set_trace()
-
     if not response.ok:
         try:
             error = response.json()
