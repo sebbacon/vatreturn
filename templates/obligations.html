@@ -8,6 +8,7 @@
   {% if g.error %}
   <div class="error">{{ g.error }}</div>
   {% else %}
+  <p>This is a list of your outstanding obligations:</p>
   <table class="table striped">
     <tr>
       <th>Start</th>
@@ -15,6 +16,7 @@
       <th>Due</th>
       <th>Status</th>
       <th>Period Key</th>
+      <td></td>
     </tr>
     {% for ob in g.obligations %}
     <tr>
@@ -22,7 +24,8 @@
       <td>{{ ob.end }}</td>
       <td>{{ ob.due }}</td>
       <td>{{ ob.status }}</td>
-      <td><a href="{{ url_for('preview_return', period_key=ob.periodKey) }}">{{ ob.periodKey }}</a></td>
+      <td>{{ ob.periodKey }}</td>
+      <td><a href="{{ url_for('preview_return', period_key=ob.periodKey) }}">Submit a return</td>
     </tr>
     {% endfor %}
   </table>
