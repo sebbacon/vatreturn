@@ -18,7 +18,7 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
 hmrc_bp = make_hmrc_blueprint(
-    scope='read:vat write:vat hello',
+    scope='read:vat write:vat',
     client_id=app.config["HMRC_OAUTH_CLIENT_ID"],
     client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"],
     redirect_to="obligations"
@@ -65,17 +65,6 @@ def get_vat_number():
     elif request.method == 'POST':
         session['hmrc_vat_number'] = request.form['hmrc_vat_number']
         return redirect(request.args.get('next'))
-
-
-@app.route("/hello")
-@login_required
-def hello():
-    url = 'https://test-api.service.hmrc.gov.uk/hello/user'
-    if hmrc.get(url).json()['message'] == 'Hello User':
-        g.ok = True
-    else:
-        g.ok = False
-    return render_template('hello.html')
 
 
 @app.route("/")
