@@ -5,6 +5,7 @@ import requests
 import datetime
 
 from flask import Flask, redirect, url_for
+from flask import send_from_directory
 from flask import render_template, g
 from flask import request
 from flask import session
@@ -13,7 +14,7 @@ from hmrc_provider import make_hmrc_blueprint, hmrc
 import pandas as pd
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
@@ -72,13 +73,42 @@ def index():
     return render_template('index.html')
 
 
+def get_fraud_headers():
+    # These should all be in the request, mostly because they've been
+    # injected into any form as hidden fields by javascript
+    headers = {
+        'Gov-Client-Connection-Method': 'WEB_APP_VIA_SERVER',
+        'Gov-Client-Public-IP': request.cookies.get(
+            'public_ip', None),
+        'Gov-Client-Timezone': request.cookies.get(
+            'user_timezone', None),
+        'Gov-Client-Window-Size': request.cookies.get(
+            'client_window', None),
+        'Gov-Client-Browser-JS-User-Agent': request.cookies.get(
+            'client_user_agent', None),
+        'Gov-Client-Browser-Plugins': request.cookies.get(
+            'client_browser_plugins', None),
+        'Gov-Client-Browser-Do-Not-Track': request.cookies.get(
+            'client_do_not_track', None),
+        'Gov-Client-Screens': request.cookies.get(
+            'client_screens', None),
+        'Gov-Client-Device-ID': request.cookies.get(
+            'device_id', None),
+        'Gov-Vendor-Version': 'v=0.1',
+        'Gov-Vendor-Public-IP': None,  # hosted in Heroku, will change
+        'Gov-Client-User-IDs': None,  # not available
+        'Gov-Vendor-Public-Port': None
+    }
+    return dict([(k, v) for k, v in headers.items() if v])
+
+
 def do_action(action, endpoint, params={}, data={}):
     url = "/organisations/vat/{}/{}".format(
         session['hmrc_vat_number'], endpoint)
     if action == 'get':
-        response = hmrc.get(url, params=params)
+        response = hmrc.get(url, params=params, headers=get_fraud_headers())
     elif action == 'post':
-        response = hmrc.post(url, json=data)
+        response = hmrc.post(url, json=data, headers=get_fraud_headers())
     if not response.ok:
         try:
             error = response.json()
@@ -182,3 +212,8 @@ def create_test_user():
             "mtd-vat"
             ]
         })
+
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
