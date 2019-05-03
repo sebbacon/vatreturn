@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block content %}
+  {% if request.args.confirmation_error %}
+  <div class="alert alert-danger">
+    You can only submit a return when you have made the declaration that the information is true and complete
+  </div>
+  {% endif %}
+
   {% if g.data %}
   <h1>Review and confirm your VAT return</h1>
   <p>Please check the following carefully. If you're happy with it, then click submit.</p>
@@ -51,7 +57,17 @@
     </tr>
   </table>
 
+
+  <div class="alert alert-warning">
+    When you submit this VAT information you are making a legal declaration that the information is true and complete. A false declaration can result in prosecution.
+  </div>
   <form action="{{ url_for('send_return', period_key=g.data.periodKey) }}" method="post">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="complete" value="complete" id="confirmation">
+      <label class="form-check-label" for="confirmation">
+        I confirm this information is true and complete
+      </label>
+    </div>
     <input type="hidden" name="vat_csv" value="{{ g.vat_csv }}">
     <input type="hidden" name="period_end" value="{{ g.period_end }}">
     <input type="submit" value="Submit this return to HMRC" class="btn btn-info">

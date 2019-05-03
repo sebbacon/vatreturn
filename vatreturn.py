@@ -188,11 +188,19 @@ def preview_return(period_key):
 @app.route("/<string:period_key>/send", methods=('POST',))
 @login_required
 def send_return(period_key):
+    confirmed = request.form.get('complete', None)
     vat_csv = request.form.get('vat_csv')
     g.period_end = request.form.get('period_end', '')
-    g.data = return_data(period_key, g.period_end, vat_csv)
-    g.response = do_action('post', 'returns', data=g.data)
-    return render_template('send_return.html')
+    if not confirmed:
+        return redirect(url_for(
+            "preview_return",
+            period_key=period_key,
+            period_end=g.period_end,
+            confirmation_error=True))
+    else:
+        g.data = return_data(period_key, g.period_end, vat_csv)
+        g.response = do_action('post', 'returns', data=g.data)
+        return render_template('send_return.html')
 
 
 @app.route("/logout")
