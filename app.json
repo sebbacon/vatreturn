@@ -7,6 +7,10 @@
   "website": "https://github.com/sebbacon/vatreturn",
   "repository": "https://github.com/sebbacon/vatreturn",
   "env": {
+    "HMRC_API_HOST": {
+      "description": "HMRC api host",
+      "value": "https://test-api.service.hmrc.gov.uk/"
+    },
     "HMRC_OAUTH_CLIENT_ID": {
       "description": "The OAuth client ID for your application, assigned by HMRC",
       "value": "client-id-goes-here"

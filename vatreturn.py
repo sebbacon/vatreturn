@@ -18,7 +18,9 @@ app = Flask(__name__, static_url_path='')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersekrit")
 app.config["HMRC_OAUTH_CLIENT_ID"] = os.environ.get("HMRC_OAUTH_CLIENT_ID")
 app.config["HMRC_OAUTH_CLIENT_SECRET"] = os.environ.get("HMRC_OAUTH_CLIENT_SECRET")
+app.config["HMRC_API_HOST"] = os.environ.get("HMRC_API_HOST")
 hmrc_bp = make_hmrc_blueprint(
+    api_host=app.config['HMRC_API_HOST'],
     scope='read:vat write:vat',
     client_id=app.config["HMRC_OAUTH_CLIENT_ID"],
     client_secret=app.config["HMRC_OAUTH_CLIENT_SECRET"],
@@ -27,9 +29,6 @@ hmrc_bp = make_hmrc_blueprint(
 app.register_blueprint(
     hmrc_bp,
     url_prefix="/login",)
-
-
-API_HOST = 'https://test-api.service.hmrc.gov.uk'
 
 
 def login_required(f):

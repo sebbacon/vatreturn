@@ -11,7 +11,6 @@ except ImportError:
     from flask import _request_ctx_stack as stack
 
 
-
 class HMRCSession(OAuth2Session):
     def __init__(self, *args, **kwargs):
         super(HMRCSession, self).__init__(*args, **kwargs)
@@ -20,6 +19,7 @@ class HMRCSession(OAuth2Session):
 
 
 def make_hmrc_blueprint(
+    api_host=None,
     client_id=None,
     client_secret=None,
     scope=None,
@@ -65,10 +65,10 @@ def make_hmrc_blueprint(
         client_id=client_id,
         client_secret=client_secret,
         scope=scope,
-        base_url="https://test-api.service.hmrc.gov.uk/",
-        authorization_url="https://test-api.service.hmrc.gov.uk/oauth/authorize",
-        token_url="https://test-api.service.hmrc.gov.uk/oauth/token",
-        auto_refresh_url="https://test-api.service.hmrc.gov.uk/oauth/token",
+        base_url=api_host,
+        authorization_url=api_host + "/oauth/authorize",
+        token_url=api_host + "/oauth/token",
+        auto_refresh_url=api_host + "/oauth/token",
         auto_refresh_kwargs={'client_id': client_id, 'client_secret': client_secret},
         redirect_url=redirect_url,
         redirect_to=redirect_to,
