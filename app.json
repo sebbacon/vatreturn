@@ -15,10 +15,6 @@
       "description": "The OAuth client secret for your application, assigned by HMRC",
       "value": "client-secret-goes-here"
     },
-    "VAT_NUMBER": {
-      "description": "Your VAT number",
-      "value": "vat-number-goes-here"
-    },
     "FLASK_SECRET_KEY": {
       "description": "A secret key for verifying the integrity of signed cookies.",
       "generator": "secret"

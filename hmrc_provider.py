@@ -11,8 +11,6 @@ except ImportError:
     from flask import _request_ctx_stack as stack
 
 
-__maintainer__ = "David Baumgold <david@davidbaumgold.com>"
-
 
 class HMRCSession(OAuth2Session):
     def __init__(self, *args, **kwargs):
