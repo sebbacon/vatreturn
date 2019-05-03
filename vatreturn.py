@@ -140,10 +140,11 @@ def obligations(show_all=False):
     return render_template('obligations.html')
 
 
-def return_data(period_key, vat_csv):
+def return_data(period_key, period_end, vat_csv):
     df = pd.read_csv(vat_csv)
     assert list(df.columns) == ['VAT period', 'SUM of Fee', 'SUM of VAT']
-    period = df[df['VAT period'] == period_key]
+
+    period = df[df['VAT period'] == period_end]
     net_fee = int(period['SUM of Fee'].iloc[0])
     vat = int(period['SUM of VAT'].iloc[0])
     gross_receipts = net_fee + vat
@@ -178,8 +179,9 @@ def return_data(period_key, vat_csv):
 def preview_return(period_key):
     g.period_key = period_key
     g.vat_csv = request.args.get('vat_csv', '')
+    g.period_end = request.args.get('period_end', '')
     if g.vat_csv:
-        g.data = return_data(period_key, g.vat_csv)
+        g.data = return_data(g.period_key, g.period_end, g.vat_csv)
     return render_template('preview_return.html')
 
 
@@ -187,7 +189,8 @@ def preview_return(period_key):
 @login_required
 def send_return(period_key):
     vat_csv = request.form.get('vat_csv')
-    g.data = return_data(period_key, vat_csv)
+    g.period_end = request.form.get('period_end', '')
+    g.data = return_data(period_key, g.period_end, vat_csv)
     g.response = do_action('post', 'returns', data=g.data)
     return render_template('send_return.html')
 
@@ -217,3 +220,8 @@ def create_test_user():
 @app.route('/js/<path:path>')
 def send_js(path):
     return send_from_directory('js', path)
+
+
+@app.route('/img/<path:path>')
+def send_img(path):
+    return send_from_directory('img', path)

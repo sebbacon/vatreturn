@@ -15,7 +15,6 @@
       <th>End</th>
       <th>Due</th>
       <th>Status</th>
-      <th>Period Key</th>
       <td></td>
     </tr>
     {% for ob in g.obligations %}
@@ -24,8 +23,7 @@
       <td>{{ ob.end }}</td>
       <td>{{ ob.due }}</td>
       <td>{{ ob.status }}</td>
-      <td>{{ ob.periodKey }}</td>
-      <td><a href="{{ url_for('preview_return', period_key=ob.periodKey) }}">Submit a return</td>
+      <td><a href="{{ url_for('preview_return', period_key=ob.periodKey, period_end=ob.end) }}">Submit a return</td>
     </tr>
     {% endfor %}
   </table>
