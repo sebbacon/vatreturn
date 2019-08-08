@@ -32,11 +32,10 @@ Set environment variables, then:
 
 The CSV you've prepared must match this format. The column headers matter (at the moment):
 
-    VAT period   SUM of Fee  SUM of VAT
-          17A3        1800        360
-          17A4        2900        590
-          18A1        1400        290
-          18A2         920        180
+    VAT period   SUM of Fee  SUM of VAT   VAT rate
+    2019-06-30          1800        360     16.5
+    2019-06-30          1400        290     16.5
+    2019-06-30          920         180     16.5
 
 For me this is a pivot table generated off my invoices spreadsheet,
 and I share it using the Google Sheets "publish as CSV" functionality.

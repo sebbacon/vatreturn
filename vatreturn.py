@@ -141,13 +141,14 @@ def obligations(show_all=False):
 
 def return_data(period_key, period_end, vat_csv):
     df = pd.read_csv(vat_csv)
-    assert list(df.columns) == ['VAT period', 'SUM of Fee', 'SUM of VAT']
+    assert list(df.columns) == ["VAT period", "SUM of Fee", "SUM of VAT", "VAT rate"]
 
-    period = df[df['VAT period'] == period_end]
-    net_fee = int(period['SUM of Fee'].iloc[0])
-    vat = int(period['SUM of VAT'].iloc[0])
+    period = df[df["VAT period"] == period_end]
+    net_fee = int(period["SUM of Fee"].iloc[0])
+    vat = int(period["SUM of VAT"].iloc[0])
+    vat_rate = float(period["VAT rate"].iloc[0]) / 100
     gross_receipts = net_fee + vat
-    vat_due = gross_receipts * 0.165
+    vat_due = gross_receipts * vat_rate
     box_1 = vat_due
     box_2 = 0  # vat due on acquisitions
     box_3 = box_1 + box_2  # total vat due - calculated: Box1 + Box2
