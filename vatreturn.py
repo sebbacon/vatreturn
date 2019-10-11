@@ -148,7 +148,7 @@ def return_data(period_key, period_end, vat_csv):
     vat = int(period["SUM of VAT"].iloc[0])
     vat_rate = float(period["VAT rate"].iloc[0]) / 100
     gross_receipts = net_fee + vat
-    vat_due = gross_receipts * vat_rate
+    vat_due = round(gross_receipts * vat_rate, 2)
     box_1 = vat_due
     box_2 = 0  # vat due on acquisitions
     box_3 = box_1 + box_2  # total vat due - calculated: Box1 + Box2
