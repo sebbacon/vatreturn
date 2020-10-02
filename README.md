@@ -1,5 +1,7 @@
 **WARNING!** I've not used this software myself for a year. It may well no longer work. I'm leaving it here in case others find the code useful. But I don't recommend using it yourself unless you understand how to hack the code!
 
+----
+
 Free, Open Source software for submitting VAT returns to HMRC under their MTD (Making Tax Digital) scheme. Needs some work to support any kind of VAT return.
 
 # About
